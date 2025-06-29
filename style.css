@@ -2,65 +2,91 @@
     CSS (Cascading Style Sheets) is used to style our HTML elements.
     We're using Tailwind CSS principles here for responsiveness and utility-first styling.
 */
+
+/* Define CSS Variables for colors - Light Mode (default) */
+:root {
+    --body-bg-color: #e0f2f7; /* Light Blue */
+    --container-bg-color: #ffffff;
+    --heading-color: #2c3e50; /* Dark Blue Gray */
+    --status-text-color: #34495e; /* Medium Blue Gray */
+    --game-board-bg-color: #3498db; /* Blue */
+    --cell-bg-color: #ecf0f1; /* Light Gray */
+    --cell-text-color: #2c3e50; /* Dark Blue Gray */
+    --cell-hover-bg-color: #dbe2e6; /* Even Lighter Gray */
+    --button-bg-color: #3498db; /* Blue */
+    --button-text-color: white;
+    --button-hover-bg-color: #2980b9; /* Darker Blue */
+    --button-disabled-bg-color: #95a5a6; /* Gray for disabled state */
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --shadow-hover-color: rgba(0, 0, 0, 0.15);
+    --button-shadow-color: rgba(0, 0, 0, 0.2);
+    --button-shadow-hover-color: rgba(0, 0, 0, 0.25);
+    --button-shadow-active-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Dark Mode overrides for CSS Variables */
+body.dark-mode {
+    --body-bg-color: #2c3e50; /* Darker Blue Gray */
+    --container-bg-color: #34495e; /* Medium Dark Blue Gray */
+    --heading-color: #ecf0f1; /* Light Gray */
+    --status-text-color: #bdc3c7; /* Light Grayish Blue */
+    --game-board-bg-color: #2980b9; /* Darker Blue */
+    --cell-bg-color: #46627f; /* Slightly lighter than container */
+    --cell-text-color: #ecf0f1; /* Light Gray */
+    --cell-hover-bg-color: #5c7c99; /* Even lighter */
+    --button-bg-color: #2ecc71; /* Green */
+    --button-text-color: #2c3e50; /* Dark Blue Gray */
+    --button-hover-bg-color: #27ae60; /* Darker Green */
+    --button-disabled-bg-color: #6c7a89; /* Darker Gray for disabled */
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --shadow-hover-color: rgba(0, 0, 0, 0.4);
+    --button-shadow-color: rgba(0, 0, 0, 0.3);
+    --button-shadow-hover-color: rgba(0, 0, 0, 0.4);
+    --button-shadow-active-color: rgba(0, 0, 0, 0.3);
+}
+
+
 body {
-    /* Use a simple sans-serif font for better readability */
     font-family: 'Inter', sans-serif;
-    /* Flexbox to center content vertically and horizontally */
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Minimum height to ensure content is centered on the whole page */
     min-height: 100vh;
-    /* Light background color */
-    background-color: #e0f2f7; /* Light Blue */
-    /* No margin around the body */
+    /* Use CSS variable for background color */
+    background-color: var(--body-bg-color);
     margin: 0;
-    /* Overflow hidden to prevent scrollbars if content slightly exceeds viewport */
     overflow: hidden;
-    /* Smooth transitions for background color changes */
     transition: background-color 0.3s ease;
 }
 
 .container {
-    /* Flexbox for the main container to arrange items vertically */
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Padding around the content */
     padding: 2.5rem; /* 40px */
-    /* Background color for the container */
-    background-color: #ffffff;
-    /* Rounded corners for a modern look */
+    /* Use CSS variable for background color */
+    background-color: var(--container-bg-color);
     border-radius: 1.5rem; /* 24px */
-    /* Subtle shadow for depth */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    /* Max width to prevent it from getting too wide on large screens */
+    /* Use CSS variable for shadow color */
+    box-shadow: 0 10px 20px var(--shadow-color);
     max-width: 90%;
-    /* Responsive width, adjusts based on screen size */
     width: 450px;
-    /* Smooth transitions for box-shadow and transform effects */
     transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .container:hover {
-    /* Slightly lift the container on hover */
     transform: translateY(-5px);
-    /* Enhance shadow on hover */
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    /* Use CSS variable for shadow color on hover */
+    box-shadow: 0 15px 30px var(--shadow-hover-color);
 }
 
 h1 {
-    /* Text color */
-    color: #2c3e50; /* Dark Blue Gray */
-    /* Font size for the title */
+    /* Use CSS variable for text color */
+    color: var(--heading-color);
     font-size: 2.5rem; /* 40px */
-    /* Bottom margin */
     margin-bottom: 1.5rem; /* 24px */
-    /* Text alignment */
     text-align: center;
-    /* Font weight for boldness */
     font-weight: 700;
-    /* Responsive font size */
     word-break: break-word; /* Ensures text wraps if too long */
 }
 @media (max-width: 600px) {
@@ -71,17 +97,12 @@ h1 {
 
 
 #gameStatus {
-    /* Text color */
-    color: #34495e; /* Medium Blue Gray */
-    /* Font size */
+    /* Use CSS variable for text color */
+    color: var(--status-text-color);
     font-size: 1.5rem; /* 24px */
-    /* Bottom margin */
     margin-bottom: 1.5rem; /* 24px */
-    /* Text alignment */
     text-align: center;
-    /* Font weight */
     font-weight: 500;
-    /* Responsive font size */
 }
 @media (max-width: 600px) {
     #gameStatus {
@@ -90,69 +111,50 @@ h1 {
 }
 
 .game-board {
-    /* CSS Grid to create a 3x3 layout for the Tic-Tac-Toe board */
     display: grid;
-    /* Define 3 columns, each taking equal space */
     grid-template-columns: repeat(3, 1fr);
-    /* Define 3 rows, each taking equal space */
     grid-template-rows: repeat(3, 1fr);
-    /* Gap between grid items */
     gap: 0.5rem; /* 8px */
-    /* Width and height for the board, making it square */
     width: 300px; /* Base size */
     height: 300px; /* Base size */
-    /* Background for the grid gaps */
-    background-color: #3498db; /* Blue */
-    /* Rounded corners for the board itself */
+    /* Use CSS variable for background color */
+    background-color: var(--game-board-bg-color);
     border-radius: 0.75rem; /* 12px */
-    /* Overflow hidden to ensure rounded corners clip child elements */
     overflow: hidden;
-    /* Bottom margin */
     margin-bottom: 2rem; /* 32px */
-    /* Responsive sizing for the board */
-    max-width: 100%; /* Ensure it fits within its parent */
-    height: auto; /* Maintain aspect ratio */
+    max-width: 100%;
+    height: auto;
     aspect-ratio: 1 / 1; /* Keep it square */
 }
 
 .cell {
-    /* Flexbox to center the X or O within the cell */
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Background color for the cells */
-    background-color: #ecf0f1; /* Light Gray */
-    /* Font size for the X/O */
+    /* Use CSS variable for background color */
+    background-color: var(--cell-bg-color);
     font-size: 4rem; /* 64px */
-    /* Font weight */
     font-weight: 700;
-    /* Text color for the X/O */
-    color: #2c3e50; /* Dark Blue Gray */
-    /* Cursor indicates it's clickable */
+    /* Use CSS variable for text color */
+    color: var(--cell-text-color);
     cursor: pointer;
-    /* Smooth transition for hover effects */
     transition: background-color 0.2s ease, transform 0.2s ease;
-    /* Rounded corners for individual cells */
     border-radius: 0.5rem; /* 8px */
-    /* User-select none prevents text selection on cells */
     user-select: none;
 }
 
 .cell:hover {
-    /* Slightly darker background on hover */
-    background-color: #dbe2e6; /* Even Lighter Gray */
-    /* Slightly larger on hover */
+    /* Use CSS variable for background color on hover */
+    background-color: var(--cell-hover-bg-color);
     transform: scale(1.02);
 }
 
 .cell.x {
-    /* Style for 'X' cells */
-    color: #e74c3c; /* Red */
+    color: #e74c3c; /* Red (remains constant for X) */
 }
 
 .cell.o {
-    /* Style for 'O' cells */
-    color: #2ecc71; /* Green */
+    color: #2ecc71; /* Green (remains constant for O) */
 }
 
 /* Style for cells highlighted by the hint */
@@ -172,35 +174,40 @@ h1 {
 }
 
 .game-button {
-    /* Common styles for all game buttons */
     display: block;
     padding: 0.75rem 1.5rem; /* 12px 24px */
-    background-color: #3498db; /* Blue */
-    color: white;
+    /* Use CSS variables for button colors */
+    background-color: var(--button-bg-color);
+    color: var(--button-text-color);
     border-radius: 0.75rem; /* 12px */
     border: none;
     font-size: 1.25rem; /* 20px */
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    /* Use CSS variable for button shadow */
+    box-shadow: 0 5px 10px var(--button-shadow-color);
     transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     flex-grow: 1; /* Allows buttons to grow and fill space */
     max-width: 200px; /* Max width for individual buttons */
 }
 
 .game-button:hover {
-    background-color: #2980b9; /* Darker Blue */
+    /* Use CSS variable for button hover background */
+    background-color: var(--button-hover-bg-color);
     transform: translateY(-3px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.25);
+    /* Use CSS variable for button hover shadow */
+    box-shadow: 0 8px 15px var(--button-shadow-hover-color);
 }
 
 .game-button:active {
     transform: translateY(0);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    /* Use CSS variable for button active shadow */
+    box-shadow: 0 2px 5px var(--button-shadow-active-color);
 }
 
 .game-button:disabled {
-    background-color: #95a5a6; /* Gray for disabled state */
+    /* Use CSS variable for disabled button background */
+    background-color: var(--button-disabled-bg-color);
     cursor: not-allowed;
     box-shadow: none;
     transform: none;

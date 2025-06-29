@@ -1,27 +1,18 @@
 // Get references to our HTML elements using their IDs or classes.
-// `document.querySelectorAll` gets all elements matching the selector.
-// `document.getElementById` gets a single element by its ID.
 const cells = document.querySelectorAll('.cell');
 const gameStatusDisplay = document.getElementById('gameStatus');
 const resetButton = document.getElementById('resetButton');
-const hintButton = document.getElementById('hintButton'); // Reference to the new hint button
+const hintButton = document.getElementById('hintButton');
+const themeToggleButton = document.getElementById('themeToggleButton'); // Reference to the new theme toggle button
 
 // Game State Variables:
-// `board`: An array representing the 9 cells. Initially empty strings.
-//          'X' or 'O' will fill these when a player makes a move.
 let board = ['', '', '', '', '', '', '', '', ''];
-// `currentPlayer`: Tracks whose turn it is. Starts with 'X' (human).
 let currentPlayer = 'X';
-// `gameActive`: A boolean to indicate if the game is still ongoing.
 let gameActive = true;
-// `isComputerTurn`: Flag to manage turns between human and AI
 let isComputerTurn = false;
-// `hintCellIndex`: To keep track of the currently highlighted hint cell, -1 if no hint
 let hintCellIndex = -1;
 
 // Winning Conditions:
-// These are all the possible combinations of cell indices that result in a win.
-// Example: [0, 1, 2] means cells at index 0, 1, and 2 forming a row.
 const winningConditions = [
     [0, 1, 2], // Top row
     [3, 4, 5], // Middle row
@@ -34,17 +25,11 @@ const winningConditions = [
 ];
 
 // Function to handle a player's move.
-// `clickedCell`: The actual HTML div element that was clicked.
-// `clickedCellIndex`: The index (0-8) of the cell, obtained from `data-cell-index`.
 function handleCellPlayed(clickedCell, clickedCellIndex) {
-    // Update the board array at the clicked index with the current player's mark.
     board[clickedCellIndex] = currentPlayer;
-    // Update the text content of the HTML cell to show 'X' or 'O'.
     clickedCell.textContent = currentPlayer;
-    // Add a class ('x' or 'o') to the cell for specific styling (e.g., color).
     clickedCell.classList.add(currentPlayer.toLowerCase());
 
-    // Remove hint highlight if a move is made
     if (hintCellIndex !== -1) {
         cells[hintCellIndex].classList.remove('hint-highlight');
         hintCellIndex = -1;
@@ -53,56 +38,43 @@ function handleCellPlayed(clickedCell, clickedCellIndex) {
 
 // Function to switch turns between players.
 function handlePlayerChange() {
-    // If current player is 'X', switch to 'O'; otherwise, switch to 'X'.
     currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-    // Update the game status display to show whose turn it is now.
     gameStatusDisplay.textContent = `Player ${currentPlayer}'s Turn`;
 }
 
 // Function to check if the game has been won or if it's a draw.
 function checkResult() {
-    let roundWon = false; // Flag to track if someone won this round
+    let roundWon = false;
 
-    // Loop through all defined winning conditions
     for (let i = 0; i < winningConditions.length; i++) {
-        const winCondition = winningConditions[i]; // Get one winning combination (e.g., [0, 1, 2])
-        // Get the values from the board array for the three cells in this condition.
+        const winCondition = winningConditions[i];
         const cellA = board[winCondition[0]];
         const cellB = board[winCondition[1]];
         const cellC = board[winCondition[2]];
 
-        // If any of the cells are empty, this condition isn't met yet, so skip.
         if (cellA === '' || cellB === '' || cellC === '') {
             continue;
         }
-        // If all three cells have the same mark (meaning X-X-X or O-O-O), someone won!
         if (cellA === cellB && cellB === cellC) {
-            roundWon = true; // Set the flag to true
-            break;           // No need to check other conditions, a win is found
+            roundWon = true;
+            break;
         }
     }
 
-    // If a win was detected:
     if (roundWon) {
-        // Update the status display to announce the winner.
         gameStatusDisplay.textContent = `Player ${currentPlayer} Has Won!`;
-        gameActive = false; // End the game
-        // Disable hint button
+        gameActive = false;
         hintButton.disabled = true;
-        return; // Exit the function
+        return;
     }
 
-    // If no win and all cells are filled (no empty strings in the board array):
-    // `!board.includes('')` checks if there are NO empty cells left.
     if (!board.includes('')) {
-        gameStatusDisplay.textContent = `It's a Draw!`; // Announce a draw
-        gameActive = false; // End the game
-        // Disable hint button
+        gameStatusDisplay.textContent = `It's a Draw!`;
+        gameActive = false;
         hintButton.disabled = true;
-        return; // Exit the function
+        return;
     }
 
-    // If no win and not a draw, then the game continues, so switch players.
     handlePlayerChange();
 }
 
@@ -110,13 +82,11 @@ function checkResult() {
 function findWinningMove(player) {
     for (let i = 0; i < winningConditions.length; i++) {
         const [a, b, c] = winningConditions[i];
-        // Check if placing 'player' at a, b, or c results in a win
-        // If two cells are occupied by `player` and the third is empty, that's the winning spot.
         if (board[a] === player && board[b] === player && board[c] === '') return c;
         if (board[a] === player && board[c] === player && board[b] === '') return b;
         if (board[b] === player && board[c] === player && board[a] === '') return a;
     }
-    return -1; // No winning move found
+    return -1;
 }
 
 // Function for the computer (AI) to make a move
@@ -159,67 +129,54 @@ async function handleComputerMove() {
 
     if (bestMove !== -1) {
         const cellToClick = cells[bestMove];
-        // Simulate a click or directly update
         handleCellPlayed(cellToClick, bestMove);
         checkResult();
     }
-    isComputerTurn = false; // AI turn ends
+    isComputerTurn = false;
 }
-
 
 // Function called when a cell is clicked.
 function handleCellClick(event) {
-    // If it's the computer's turn, prevent human clicks
     if (isComputerTurn) {
         return;
     }
 
-    // `event.target` refers to the specific cell (div) that was clicked.
     const clickedCell = event.target;
-    // Get the `data-cell-index` attribute value and convert it to a number.
     const clickedCellIndex = parseInt(clickedCell.dataset.cellIndex);
 
-    // Important: Check if the clicked cell is already filled OR if the game is not active.
-    // If either is true, do nothing (return) to prevent invalid moves.
     if (board[clickedCellIndex] !== '' || !gameActive) {
         return;
     }
 
-    // If the move is valid, proceed:
-    handleCellPlayed(clickedCell, clickedCellIndex); // Place the mark
-    checkResult(); // Check if this move resulted in a win or draw
+    handleCellPlayed(clickedCell, clickedCellIndex);
+    checkResult();
 
-    // If game is still active after human move, initiate computer's turn
     if (gameActive) {
         isComputerTurn = true;
-        // Add a slight delay for better user experience
         setTimeout(handleComputerMove, 700);
     }
 }
 
 // Function to call LLM for a hint
 async function getLLMHint() {
-    // Only provide hint for Player X's turn and if game is active
     if (!gameActive || currentPlayer === 'O') {
         gameStatusDisplay.textContent = "Hints are only for Player X's turn!";
         setTimeout(() => {
-            if (gameActive) { // Only revert if game is still active
+            if (gameActive) {
                 gameStatusDisplay.textContent = `Player ${currentPlayer}'s Turn`;
             }
         }, 2000);
         return;
     }
 
-    // Remove previous hint highlight if any
     if (hintCellIndex !== -1) {
         cells[hintCellIndex].classList.remove('hint-highlight');
         hintCellIndex = -1;
     }
 
     gameStatusDisplay.textContent = "✨ Generating hint...";
-    hintButton.disabled = true; // Disable hint button during generation
+    hintButton.disabled = true;
 
-    // Construct the prompt for the LLM
     const prompt = `You are a helpful Tic-Tac-Toe assistant.
     The current Tic-Tac-Toe board state is represented by an array: [${board.map(cell => cell === '' ? 'empty' : cell).join(', ')}].
     Player ${currentPlayer}'s turn.
@@ -228,8 +185,7 @@ async function getLLMHint() {
     let chatHistory = [];
     chatHistory.push({ role: "user", parts: [{ text: prompt }] });
     const payload = { contents: chatHistory };
-    // API key is handled by the Canvas environment for gemini-2.0-flash
-    const apiKey = "";
+    const apiKey = ""; // API key is handled by the Canvas environment
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
     try {
@@ -246,9 +202,7 @@ async function getLLMHint() {
             const text = result.candidates[0].content.parts[0].text;
             const suggestedMove = parseInt(text.trim());
 
-            // Validate the LLM's suggestion
             if (!isNaN(suggestedMove) && suggestedMove >= 0 && suggestedMove <= 8 && board[suggestedMove] === '') {
-                // Highlight the suggested move
                 hintCellIndex = suggestedMove;
                 cells[hintCellIndex].classList.add('hint-highlight');
                 gameStatusDisplay.textContent = `Player ${currentPlayer}'s Turn. ✨ Hint: Try cell ${suggestedMove}!`;
@@ -264,11 +218,9 @@ async function getLLMHint() {
         gameStatusDisplay.textContent = "✨ Error fetching hint.";
         console.error("Error calling Gemini API:", error);
     } finally {
-        hintButton.disabled = false; // Re-enable hint button
-        // Revert status message after a delay if it's not a win/draw message
+        hintButton.disabled = false;
         if (gameActive) {
             setTimeout(() => {
-                // Only revert if the status message still contains "Hint" and the game is active
                 if (gameStatusDisplay.textContent.includes("Hint") && gameActive) {
                    gameStatusDisplay.textContent = `Player ${currentPlayer}'s Turn`;
                 }
@@ -277,34 +229,54 @@ async function getLLMHint() {
     }
 }
 
-
 // Function to reset the game to its initial state.
 function handleResetGame() {
-    // Reset all game state variables:
-    board = ['', '', '', '', '', '', '', '', '']; // Clear the board array
-    currentPlayer = 'X';                          // Start with 'X' again (human player)
-    gameActive = true;                            // Make the game active again
-    isComputerTurn = false;                       // Reset computer turn flag
-    gameStatusDisplay.textContent = `Player ${currentPlayer}'s Turn`; // Reset status message
-    hintButton.disabled = false;                  // Re-enable hint button
+    board = ['', '', '', '', '', '', '', '', ''];
+    currentPlayer = 'X';
+    gameActive = true;
+    isComputerTurn = false;
+    gameStatusDisplay.textContent = `Player ${currentPlayer}'s Turn`;
+    hintButton.disabled = false;
 
-    // Remove any existing hint highlight
     if (hintCellIndex !== -1) {
         cells[hintCellIndex].classList.remove('hint-highlight');
         hintCellIndex = -1;
     }
 
-    // Loop through each cell element and clear its content and class.
     cells.forEach(cell => {
-        cell.textContent = '';          // Remove 'X' or 'O' text
-        cell.classList.remove('x', 'o'); // Remove any 'x' or 'o' styling classes
+        cell.textContent = '';
+        cell.classList.remove('x', 'o');
     });
 }
 
+// Function to toggle between light and dark modes
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode'); // Add or remove 'dark-mode' class
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    // Save preference to localStorage
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    // Update button text/icon
+    themeToggleButton.textContent = isDarkMode ? '☀️ Light Mode' : '🌙 Dark Mode';
+}
+
+// Function to apply theme on page load
+function applyThemeOnLoad() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        themeToggleButton.textContent = '☀️ Light Mode';
+    } else {
+        // Ensure light mode is default and button text is correct if no preference or 'light'
+        document.body.classList.remove('dark-mode');
+        themeToggleButton.textContent = '🌙 Dark Mode';
+    }
+}
+
 // Event Listeners:
-// Attach the `handleCellClick` function to every cell when it's clicked.
 cells.forEach(cell => cell.addEventListener('click', handleCellClick));
-// Attach the `handleResetGame` function to the reset button when it's clicked.
 resetButton.addEventListener('click', handleResetGame);
-// Attach the `getLLMHint` function to the hint button when it's clicked.
 hintButton.addEventListener('click', getLLMHint);
+themeToggleButton.addEventListener('click', toggleDarkMode); // Event listener for the new theme toggle button
+
+// Apply the saved theme when the page loads
+document.addEventListener('DOMContentLoaded', applyThemeOnLoad);
