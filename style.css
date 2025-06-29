@@ -1,0 +1,219 @@
+/*
+    CSS (Cascading Style Sheets) is used to style our HTML elements.
+    We're using Tailwind CSS principles here for responsiveness and utility-first styling.
+*/
+body {
+    /* Use a simple sans-serif font for better readability */
+    font-family: 'Inter', sans-serif;
+    /* Flexbox to center content vertically and horizontally */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Minimum height to ensure content is centered on the whole page */
+    min-height: 100vh;
+    /* Light background color */
+    background-color: #e0f2f7; /* Light Blue */
+    /* No margin around the body */
+    margin: 0;
+    /* Overflow hidden to prevent scrollbars if content slightly exceeds viewport */
+    overflow: hidden;
+    /* Smooth transitions for background color changes */
+    transition: background-color 0.3s ease;
+}
+
+.container {
+    /* Flexbox for the main container to arrange items vertically */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Padding around the content */
+    padding: 2.5rem; /* 40px */
+    /* Background color for the container */
+    background-color: #ffffff;
+    /* Rounded corners for a modern look */
+    border-radius: 1.5rem; /* 24px */
+    /* Subtle shadow for depth */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    /* Max width to prevent it from getting too wide on large screens */
+    max-width: 90%;
+    /* Responsive width, adjusts based on screen size */
+    width: 450px;
+    /* Smooth transitions for box-shadow and transform effects */
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.container:hover {
+    /* Slightly lift the container on hover */
+    transform: translateY(-5px);
+    /* Enhance shadow on hover */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+h1 {
+    /* Text color */
+    color: #2c3e50; /* Dark Blue Gray */
+    /* Font size for the title */
+    font-size: 2.5rem; /* 40px */
+    /* Bottom margin */
+    margin-bottom: 1.5rem; /* 24px */
+    /* Text alignment */
+    text-align: center;
+    /* Font weight for boldness */
+    font-weight: 700;
+    /* Responsive font size */
+    word-break: break-word; /* Ensures text wraps if too long */
+}
+@media (max-width: 600px) {
+    h1 {
+        font-size: 2rem; /* Adjust font size for smaller screens */
+    }
+}
+
+
+#gameStatus {
+    /* Text color */
+    color: #34495e; /* Medium Blue Gray */
+    /* Font size */
+    font-size: 1.5rem; /* 24px */
+    /* Bottom margin */
+    margin-bottom: 1.5rem; /* 24px */
+    /* Text alignment */
+    text-align: center;
+    /* Font weight */
+    font-weight: 500;
+    /* Responsive font size */
+}
+@media (max-width: 600px) {
+    #gameStatus {
+        font-size: 1.25rem; /* Adjust font size for smaller screens */
+    }
+}
+
+.game-board {
+    /* CSS Grid to create a 3x3 layout for the Tic-Tac-Toe board */
+    display: grid;
+    /* Define 3 columns, each taking equal space */
+    grid-template-columns: repeat(3, 1fr);
+    /* Define 3 rows, each taking equal space */
+    grid-template-rows: repeat(3, 1fr);
+    /* Gap between grid items */
+    gap: 0.5rem; /* 8px */
+    /* Width and height for the board, making it square */
+    width: 300px; /* Base size */
+    height: 300px; /* Base size */
+    /* Background for the grid gaps */
+    background-color: #3498db; /* Blue */
+    /* Rounded corners for the board itself */
+    border-radius: 0.75rem; /* 12px */
+    /* Overflow hidden to ensure rounded corners clip child elements */
+    overflow: hidden;
+    /* Bottom margin */
+    margin-bottom: 2rem; /* 32px */
+    /* Responsive sizing for the board */
+    max-width: 100%; /* Ensure it fits within its parent */
+    height: auto; /* Maintain aspect ratio */
+    aspect-ratio: 1 / 1; /* Keep it square */
+}
+
+.cell {
+    /* Flexbox to center the X or O within the cell */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Background color for the cells */
+    background-color: #ecf0f1; /* Light Gray */
+    /* Font size for the X/O */
+    font-size: 4rem; /* 64px */
+    /* Font weight */
+    font-weight: 700;
+    /* Text color for the X/O */
+    color: #2c3e50; /* Dark Blue Gray */
+    /* Cursor indicates it's clickable */
+    cursor: pointer;
+    /* Smooth transition for hover effects */
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    /* Rounded corners for individual cells */
+    border-radius: 0.5rem; /* 8px */
+    /* User-select none prevents text selection on cells */
+    user-select: none;
+}
+
+.cell:hover {
+    /* Slightly darker background on hover */
+    background-color: #dbe2e6; /* Even Lighter Gray */
+    /* Slightly larger on hover */
+    transform: scale(1.02);
+}
+
+.cell.x {
+    /* Style for 'X' cells */
+    color: #e74c3c; /* Red */
+}
+
+.cell.o {
+    /* Style for 'O' cells */
+    color: #2ecc71; /* Green */
+}
+
+/* Style for cells highlighted by the hint */
+.cell.hint-highlight {
+    background-color: #ffeb3b; /* Yellow */
+    border: 2px solid #fbc02d; /* Darker Yellow border */
+    transform: scale(1.05); /* Slightly larger to stand out */
+}
+
+
+.button-group {
+    display: flex;
+    gap: 1rem; /* Space between buttons */
+    margin-top: 1rem;
+    flex-wrap: wrap; /* Allows buttons to wrap on smaller screens */
+    justify-content: center;
+}
+
+.game-button {
+    /* Common styles for all game buttons */
+    display: block;
+    padding: 0.75rem 1.5rem; /* 12px 24px */
+    background-color: #3498db; /* Blue */
+    color: white;
+    border-radius: 0.75rem; /* 12px */
+    border: none;
+    font-size: 1.25rem; /* 20px */
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    flex-grow: 1; /* Allows buttons to grow and fill space */
+    max-width: 200px; /* Max width for individual buttons */
+}
+
+.game-button:hover {
+    background-color: #2980b9; /* Darker Blue */
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.25);
+}
+
+.game-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.game-button:disabled {
+    background-color: #95a5a6; /* Gray for disabled state */
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Responsive adjustments for buttons */
+@media (max-width: 600px) {
+    .button-group {
+        flex-direction: column; /* Stack buttons vertically on small screens */
+        align-items: center;
+    }
+    .game-button {
+        width: 100%; /* Full width for stacked buttons */
+        max-width: 250px; /* Adjust max-width for stacked buttons */
+    }
+}
