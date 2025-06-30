@@ -157,12 +157,7 @@ h1 {
     color: #2ecc71; /* Green (remains constant for O) */
 }
 
-/* Style for cells highlighted by the hint */
-.cell.hint-highlight {
-    background-color: #ffeb3b; /* Yellow */
-    border: 2px solid #fbc02d; /* Darker Yellow border */
-    transform: scale(1.05); /* Slightly larger to stand out */
-}
+/* Removed the .cell.hint-highlight styles */
 
 
 .button-group {
