@@ -114,9 +114,9 @@ h1 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 0.5rem; /* 8px */
+    gap: 0.15rem; /* 8px */
     width: 300px; /* Base size */
-    height: 300px; /* Base size */
+    height: 150px; /* Base size */
     /* Use CSS variable for background color */
     background-color: var(--game-board-bg-color);
     border-radius: 0.75rem; /* 12px */
