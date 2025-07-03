@@ -2,15 +2,14 @@
 const cells = document.querySelectorAll('.cell');
 const gameStatusDisplay = document.getElementById('gameStatus');
 const resetButton = document.getElementById('resetButton');
-// Removed: const hintButton = document.getElementById('hintButton');
 const themeToggleButton = document.getElementById('themeToggleButton');
 
 // Game State Variables:
 let board = ['', '', '', '', '', '', '', '', ''];
 let currentPlayer = 'X';
 let gameActive = true;
-let isComputerTurn = false;
-// Removed: let hintCellIndex = -1;
+// Removed: let isComputerTurn = false; // No longer needed for two-player game
+// Removed: let hintCellIndex = -1; // No longer needed as hint function is removed
 
 // Winning Conditions:
 const winningConditions = [
@@ -30,11 +29,7 @@ function handleCellPlayed(clickedCell, clickedCellIndex) {
     clickedCell.textContent = currentPlayer;
     clickedCell.classList.add(currentPlayer.toLowerCase());
 
-    // Removed hint highlight logic
-    // if (hintCellIndex !== -1) {
-    //     cells[hintCellIndex].classList.remove('hint-highlight');
-    //     hintCellIndex = -1;
-    // }
+    // Removed hint highlight logic as hint function is removed
 }
 
 // Function to switch turns between players.
@@ -65,82 +60,26 @@ function checkResult() {
     if (roundWon) {
         gameStatusDisplay.textContent = `Player ${currentPlayer} Has Won!`;
         gameActive = false;
-        // Removed: hintButton.disabled = true;
+        // Removed: hintButton.disabled = true; // No hint button
         return;
     }
 
     if (!board.includes('')) {
         gameStatusDisplay.textContent = `It's a Draw!`;
         gameActive = false;
-        // Removed: hintButton.disabled = true;
+        // Removed: hintButton.disabled = true; // No hint button
         return;
     }
 
     handlePlayerChange();
 }
 
-// Function to find a winning move for a given player or a blocking move
-function findWinningMove(player) {
-    for (let i = 0; i < winningConditions.length; i++) {
-        const [a, b, c] = winningConditions[i];
-        if (board[a] === player && board[b] === player && board[c] === '') return c;
-        if (board[a] === player && board[c] === player && board[b] === '') return b;
-        if (board[b] === player && board[c] === player && board[a] === '') return a;
-    }
-    return -1;
-}
-
-// Function for the computer (AI) to make a move
-async function handleComputerMove() {
-    if (!gameActive || currentPlayer !== 'O') {
-        isComputerTurn = false;
-        return;
-    }
-
-    let bestMove = -1;
-
-    // Strategy:
-    // 1. Try to win (for AI)
-    bestMove = findWinningMove('O');
-    // 2. Block player's winning move (for 'X')
-    if (bestMove === -1) {
-        bestMove = findWinningMove('X');
-    }
-    // 3. Take center if available
-    if (bestMove === -1 && board[4] === '') {
-        bestMove = 4;
-    }
-    // 4. Take a corner if available
-    if (bestMove === -1) {
-        const corners = [0, 2, 6, 8];
-        for (const index of corners) {
-            if (board[index] === '') {
-                bestMove = index;
-                break;
-            }
-        }
-    }
-    // 5. Take any available spot
-    if (bestMove === -1) {
-        const availableCells = board.map((val, idx) => val === '' ? idx : -1).filter(idx => idx !== -1);
-        if (availableCells.length > 0) {
-            bestMove = availableCells[Math.floor(Math.random() * availableCells.length)];
-        }
-    }
-
-    if (bestMove !== -1) {
-        const cellToClick = cells[bestMove];
-        handleCellPlayed(cellToClick, bestMove);
-        checkResult();
-    }
-    isComputerTurn = false;
-}
+// Removed: Function to find a winning move (AI specific)
+// Removed: Function for the computer (AI) to make a move
 
 // Function called when a cell is clicked.
 function handleCellClick(event) {
-    if (isComputerTurn) {
-        return;
-    }
+    // Removed: if (isComputerTurn) { return; } // No computer turn in 2-player mode
 
     const clickedCell = event.target;
     const clickedCellIndex = parseInt(clickedCell.dataset.cellIndex);
@@ -152,30 +91,25 @@ function handleCellClick(event) {
     handleCellPlayed(clickedCell, clickedCellIndex);
     checkResult();
 
-    if (gameActive) {
-        isComputerTurn = true;
-        setTimeout(handleComputerMove, 700);
-    }
+    // Removed AI turn initiation
+    // if (gameActive) {
+    //     isComputerTurn = true;
+    //     setTimeout(handleComputerMove, 700);
+    // }
 }
 
-// Removed the getLLMHint function entirely
-
+// Removed: Function to call LLM for a hint
 
 // Function to reset the game to its initial state.
 function handleResetGame() {
     board = ['', '', '', '', '', '', '', '', ''];
     currentPlayer = 'X';
     gameActive = true;
-    isComputerTurn = false;
+    // Removed: isComputerTurn = false; // No computer turn in 2-player mode
     gameStatusDisplay.textContent = `Player ${currentPlayer}'s Turn`;
-    // Removed: hintButton.disabled = false;
+    // Removed: hintButton.disabled = false; // No hint button
 
     // Removed hint highlight reset logic
-    // if (hintCellIndex !== -1) {
-    //     cells[hintCellIndex].classList.remove('hint-highlight');
-    //     hintCellIndex = -1;
-    // }
-
     cells.forEach(cell => {
         cell.textContent = '';
         cell.classList.remove('x', 'o');
@@ -205,7 +139,7 @@ function applyThemeOnLoad() {
 // Event Listeners:
 cells.forEach(cell => cell.addEventListener('click', handleCellClick));
 resetButton.addEventListener('click', handleResetGame);
-// Removed: hintButton.addEventListener('click', getLLMHint);
+// Removed: hintButton.addEventListener('click', getLLMHint); // No hint button
 themeToggleButton.addEventListener('click', toggleDarkMode);
 
 // Apply the saved theme when the page loads
