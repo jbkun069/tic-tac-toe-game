@@ -1,22 +1,16 @@
-/*
-    CSS (Cascading Style Sheets) is used to style our HTML elements.
-    We're using Tailwind CSS principles here for responsiveness and utility-first styling.
-*/
-
-/* Define CSS Variables for colors - Light Mode (default) */
 :root {
-    --body-bg-color: #e0f2f7; /* Light Blue */
+    --body-bg-color: #e0f2f7;
     --container-bg-color: #ffffff;
-    --heading-color: #2c3e50; /* Dark Blue Gray */
-    --status-text-color: #34495e; /* Medium Blue Gray */
-    --game-board-bg-color: #3498db; /* Blue */
-    --cell-bg-color: #ecf0f1; /* Light Gray */
-    --cell-text-color: #2c3e50; /* Dark Blue Gray */
-    --cell-hover-bg-color: #dbe2e6; /* Even Lighter Gray */
-    --button-bg-color: #3498db; /* Blue */
+    --heading-color: #2c3e50;
+    --status-text-color: #34495e;
+    --game-board-bg-color: #3498db;
+    --cell-bg-color: #ecf0f1;
+    --cell-text-color: #2c3e50;
+    --cell-hover-bg-color: #dbe2e6;
+    --button-bg-color: #3498db;
     --button-text-color: white;
-    --button-hover-bg-color: #2980b9; /* Darker Blue */
-    --button-disabled-bg-color: #95a5a6; /* Gray for disabled state */
+    --button-hover-bg-color: #2980b9;
+    --button-disabled-bg-color: #95a5a6;
     --shadow-color: rgba(0, 0, 0, 0.1);
     --shadow-hover-color: rgba(0, 0, 0, 0.15);
     --button-shadow-color: rgba(0, 0, 0, 0.2);
@@ -24,20 +18,19 @@
     --button-shadow-active-color: rgba(0, 0, 0, 0.2);
 }
 
-/* Dark Mode overrides for CSS Variables */
 body.dark-mode {
-    --body-bg-color: #2c3e50; /* Darker Blue Gray */
-    --container-bg-color: #34495e; /* Medium Dark Blue Gray */
-    --heading-color: #ecf0f1; /* Light Gray */
-    --status-text-color: #bdc3c7; /* Light Grayish Blue */
-    --game-board-bg-color: #2980b9; /* Darker Blue */
-    --cell-bg-color: #46627f; /* Slightly lighter than container */
-    --cell-text-color: #ecf0f1; /* Light Gray */
-    --cell-hover-bg-color: #5c7c99; /* Even lighter */
-    --button-bg-color: #2ecc71; /* Green */
-    --button-text-color: #2c3e50; /* Dark Blue Gray */
-    --button-hover-bg-color: #27ae60; /* Darker Green */
-    --button-disabled-bg-color: #6c7a89; /* Darker Gray for disabled */
+    --body-bg-color: #2c3e50;
+    --container-bg-color: #34495e;
+    --heading-color: #ecf0f1;
+    --status-text-color: #bdc3c7;
+    --game-board-bg-color: #2980b9;
+    --cell-bg-color: #46627f;
+    --cell-text-color: #ecf0f1;
+    --cell-hover-bg-color: #5c7c99;
+    --button-bg-color: #2ecc71;
+    --button-text-color: #2c3e50;
+    --button-hover-bg-color: #27ae60;
+    --button-disabled-bg-color: #6c7a89;
     --shadow-color: rgba(0, 0, 0, 0.3);
     --shadow-hover-color: rgba(0, 0, 0, 0.4);
     --button-shadow-color: rgba(0, 0, 0, 0.3);
@@ -45,29 +38,38 @@ body.dark-mode {
     --button-shadow-active-color: rgba(0, 0, 0, 0.3);
 }
 
-
 body {
     font-family: 'Inter', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    /* Use CSS variable for background color */
     background-color: var(--body-bg-color);
     margin: 0;
     overflow: hidden;
     transition: background-color 0.3s ease;
 }
 
+.hidden {
+    display: none !important;
+}
+
+.choice-screen .button-group {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+.choice-screen .game-button {
+    min-width: 150px;
+}
+
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2.5rem; /* 40px */
-    /* Use CSS variable for background color */
+    padding: 2.5rem;
     background-color: var(--container-bg-color);
-    border-radius: 1.5rem; /* 24px */
-    /* Use CSS variable for shadow color */
+    border-radius: 1.5rem;
     box-shadow: 0 10px 20px var(--shadow-color);
     max-width: 90%;
     width: 450px;
@@ -76,146 +78,125 @@ body {
 
 .container:hover {
     transform: translateY(-5px);
-    /* Use CSS variable for shadow color on hover */
     box-shadow: 0 15px 30px var(--shadow-hover-color);
 }
 
 h1 {
-    /* Use CSS variable for text color */
     color: var(--heading-color);
-    font-size: 2.5rem; /* 40px */
-    margin-bottom: 1.5rem; /* 24px */
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
     text-align: center;
     font-weight: 700;
-    word-break: break-word; /* Ensures text wraps if too long */
+    word-break: break-word;
 }
 @media (max-width: 600px) {
     h1 {
-        font-size: 2rem; /* Adjust font size for smaller screens */
+        font-size: 2rem;
     }
 }
 
-
 #gameStatus {
-    /* Use CSS variable for text color */
     color: var(--status-text-color);
-    font-size: 1.5rem; /* 24px */
-    margin-bottom: 1.5rem; /* 24px */
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
     text-align: center;
     font-weight: 500;
 }
 @media (max-width: 600px) {
     #gameStatus {
-        font-size: 1.25rem; /* Adjust font size for smaller screens */
+        font-size: 1.25rem;
     }
 }
 
 .game-board {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 0.15rem; /* 8px */
-    width: 300px; /* Base size */
-    height: 150px; /* Base size */
-    /* Use CSS variable for background color */
+    gap: 0.5rem;
+    width: 300px;
+    height: 300px;
     background-color: var(--game-board-bg-color);
-    border-radius: 0.75rem; /* 12px */
+    border-radius: 0.75rem;
     overflow: hidden;
-    margin-bottom: 2rem; /* 32px */
+    margin-bottom: 2rem;
     max-width: 100%;
     height: auto;
-    aspect-ratio: 1 / 1; /* Keep it square */
+    aspect-ratio: 1 / 1;
 }
 
 .cell {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Use CSS variable for background color */
     background-color: var(--cell-bg-color);
-    font-size: 4rem; /* 64px */
     font-weight: 700;
-    /* Use CSS variable for text color */
     color: var(--cell-text-color);
     cursor: pointer;
     transition: background-color 0.2s ease, transform 0.2s ease;
-    border-radius: 0.5rem; /* 8px */
+    border-radius: 0.5rem;
     user-select: none;
 }
 
 .cell:hover {
-    /* Use CSS variable for background color on hover */
     background-color: var(--cell-hover-bg-color);
     transform: scale(1.02);
 }
 
 .cell.x {
-    color: #e74c3c; /* Red (remains constant for X) */
+    color: #e74c3c;
 }
 
 .cell.o {
-    color: #2ecc71; /* Green (remains constant for O) */
+    color: #2ecc71;
 }
-
-/* Removed the .cell.hint-highlight styles */
-
 
 .button-group {
     display: flex;
-    gap: 1rem; /* Space between buttons */
+    gap: 1rem;
     margin-top: 1rem;
-    flex-wrap: wrap; /* Allows buttons to wrap on smaller screens */
+    flex-wrap: wrap;
     justify-content: center;
 }
 
 .game-button {
     display: block;
-    padding: 0.75rem 1.5rem; /* 12px 24px */
-    /* Use CSS variables for button colors */
+    padding: 0.75rem 1.5rem;
     background-color: var(--button-bg-color);
     color: var(--button-text-color);
-    border-radius: 0.75rem; /* 12px */
+    border-radius: 0.75rem;
     border: none;
-    font-size: 1.25rem; /* 20px */
+    font-size: 1.25rem;
     font-weight: 600;
     cursor: pointer;
-    /* Use CSS variable for button shadow */
     box-shadow: 0 5px 10px var(--button-shadow-color);
     transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    flex-grow: 1; /* Allows buttons to grow and fill space */
-    max-width: 200px; /* Max width for individual buttons */
+    flex-grow: 1;
+    max-width: 200px;
 }
 
 .game-button:hover {
-    /* Use CSS variable for button hover background */
     background-color: var(--button-hover-bg-color);
     transform: translateY(-3px);
-    /* Use CSS variable for button hover shadow */
     box-shadow: 0 8px 15px var(--button-shadow-hover-color);
 }
 
 .game-button:active {
     transform: translateY(0);
-    /* Use CSS variable for button active shadow */
     box-shadow: 0 2px 5px var(--button-shadow-active-color);
 }
 
 .game-button:disabled {
-    /* Use CSS variable for disabled button background */
     background-color: var(--button-disabled-bg-color);
     cursor: not-allowed;
     box-shadow: none;
     transform: none;
 }
 
-/* Responsive adjustments for buttons */
 @media (max-width: 600px) {
     .button-group {
-        flex-direction: column; /* Stack buttons vertically on small screens */
+        flex-direction: column;
         align-items: center;
     }
     .game-button {
-        width: 100%; /* Full width for stacked buttons */
-        max-width: 250px; /* Adjust max-width for stacked buttons */
+        width: 100%;
+        max-width: 250px;
     }
 }

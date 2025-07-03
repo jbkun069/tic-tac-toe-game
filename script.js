@@ -1,35 +1,106 @@
 // Get references to our HTML elements using their IDs or classes.
-const cells = document.querySelectorAll('.cell');
+const choiceScreen = document.getElementById('choiceScreen');
+const gameContainer = document.getElementById('gameContainer');
+const choose3x3Button = document.getElementById('choose3x3');
+const choose4x4Button = document.getElementById('choose4x4');
+const gameBoard = document.getElementById('gameBoard'); // Reference to the game board div
 const gameStatusDisplay = document.getElementById('gameStatus');
 const resetButton = document.getElementById('resetButton');
 const themeToggleButton = document.getElementById('themeToggleButton');
 
 // Game State Variables:
-let board = ['', '', '', '', '', '', '', '', ''];
+let board = []; // Will be initialized dynamically
 let currentPlayer = 'X';
 let gameActive = true;
-// Removed: let isComputerTurn = false; // No longer needed for two-player game
-// Removed: let hintCellIndex = -1; // No longer needed as hint function is removed
+let boardSize = 0; // Will be 3 or 4
+let cells = []; // Will be updated after board generation
+let winningConditions = []; // Will be generated dynamically
 
-// Winning Conditions:
-const winningConditions = [
-    [0, 1, 2], // Top row
-    [3, 4, 5], // Middle row
-    [6, 7, 8], // Bottom row
-    [0, 3, 6], // Left column
-    [1, 4, 7], // Middle column
-    [2, 5, 8], // Right column
-    [0, 4, 8], // Diagonal from top-left to bottom-right
-    [2, 4, 6]  // Diagonal from top-right to bottom-left
-];
+// Function to generate winning conditions based on board size
+function generateWinningConditions(size) {
+    const conditions = [];
+    const totalCells = size * size;
+
+    // Rows
+    for (let i = 0; i < totalCells; i += size) {
+        const row = [];
+        for (let j = 0; j < size; j++) {
+            row.push(i + j);
+        }
+        conditions.push(row);
+    }
+
+    // Columns
+    for (let i = 0; i < size; i++) {
+        const col = [];
+        for (let j = 0; j < size; j++) {
+            col.push(i + j * size);
+        }
+        conditions.push(col);
+    }
+
+    // Diagonal (top-left to bottom-right)
+    const diag1 = [];
+    for (let i = 0; i < size; i++) {
+        diag1.push(i * (size + 1));
+    }
+    conditions.push(diag1);
+
+    // Diagonal (top-right to bottom-left)
+    const diag2 = [];
+    for (let i = 0; i < size; i++) {
+        diag2.push((i + 1) * (size - 1));
+    }
+    conditions.push(diag2);
+
+    return conditions;
+}
+
+// Function to initialize the game board and state for a given size
+function initializeGame(size) {
+    boardSize = size;
+    board = Array(size * size).fill(''); // Create a new empty board array
+    winningConditions = generateWinningConditions(size); // Generate conditions for this size
+
+    // Dynamically create cells
+    gameBoard.innerHTML = ''; // Clear any existing cells
+    gameBoard.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+    gameBoard.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+
+    // Adjust board size and cell font size based on boardSize
+    if (size === 3) {
+        gameBoard.style.width = '300px';
+        gameBoard.style.height = '300px';
+    } else if (size === 4) {
+        gameBoard.style.width = '360px'; // Slightly larger for 4x4
+        gameBoard.style.height = '360px';
+    }
+
+    for (let i = 0; i < size * size; i++) {
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        cell.dataset.cellIndex = i;
+        // Adjust font size dynamically
+        cell.style.fontSize = size === 3 ? '4rem' : '3rem'; // Larger for 3x3, smaller for 4x4
+        cell.addEventListener('click', handleCellClick);
+        gameBoard.appendChild(cell);
+    }
+
+    // Re-query cells after they are created
+    cells = document.querySelectorAll('.cell');
+
+    // Hide choice screen and show game container
+    choiceScreen.classList.add('hidden');
+    gameContainer.classList.remove('hidden');
+
+    handleResetGame(); // Reset game state for the new board
+}
 
 // Function to handle a player's move.
 function handleCellPlayed(clickedCell, clickedCellIndex) {
     board[clickedCellIndex] = currentPlayer;
     clickedCell.textContent = currentPlayer;
     clickedCell.classList.add(currentPlayer.toLowerCase());
-
-    // Removed hint highlight logic as hint function is removed
 }
 
 // Function to switch turns between players.
@@ -42,16 +113,28 @@ function handlePlayerChange() {
 function checkResult() {
     let roundWon = false;
 
+    // Iterate through all possible winning conditions for the current board size
     for (let i = 0; i < winningConditions.length; i++) {
         const winCondition = winningConditions[i];
-        const cellA = board[winCondition[0]];
-        const cellB = board[winCondition[1]];
-        const cellC = board[winCondition[2]];
+        // Get the values from the board array for the cells in this condition
+        // Ensure all cells in the condition are checked based on the board size
+        const firstCellMark = board[winCondition[0]];
 
-        if (cellA === '' || cellB === '' || cellC === '') {
+        // If the first cell in the condition is empty, this condition cannot be met yet
+        if (firstCellMark === '') {
             continue;
         }
-        if (cellA === cellB && cellB === cellC) {
+
+        // Check if all cells in the current winning condition have the same mark
+        let allMatch = true;
+        for (let j = 1; j < winCondition.length; j++) {
+            if (board[winCondition[j]] !== firstCellMark) {
+                allMatch = false;
+                break;
+            }
+        }
+
+        if (allMatch) {
             roundWon = true;
             break;
         }
@@ -60,27 +143,21 @@ function checkResult() {
     if (roundWon) {
         gameStatusDisplay.textContent = `Player ${currentPlayer} Has Won!`;
         gameActive = false;
-        // Removed: hintButton.disabled = true; // No hint button
         return;
     }
 
     if (!board.includes('')) {
         gameStatusDisplay.textContent = `It's a Draw!`;
         gameActive = false;
-        // Removed: hintButton.disabled = true; // No hint button
         return;
     }
 
     handlePlayerChange();
 }
 
-// Removed: Function to find a winning move (AI specific)
-// Removed: Function for the computer (AI) to make a move
 
 // Function called when a cell is clicked.
 function handleCellClick(event) {
-    // Removed: if (isComputerTurn) { return; } // No computer turn in 2-player mode
-
     const clickedCell = event.target;
     const clickedCellIndex = parseInt(clickedCell.dataset.cellIndex);
 
@@ -90,26 +167,15 @@ function handleCellClick(event) {
 
     handleCellPlayed(clickedCell, clickedCellIndex);
     checkResult();
-
-    // Removed AI turn initiation
-    // if (gameActive) {
-    //     isComputerTurn = true;
-    //     setTimeout(handleComputerMove, 700);
-    // }
 }
-
-// Removed: Function to call LLM for a hint
 
 // Function to reset the game to its initial state.
 function handleResetGame() {
-    board = ['', '', '', '', '', '', '', '', ''];
+    board.fill(''); // Clear the board array
     currentPlayer = 'X';
     gameActive = true;
-    // Removed: isComputerTurn = false; // No computer turn in 2-player mode
     gameStatusDisplay.textContent = `Player ${currentPlayer}'s Turn`;
-    // Removed: hintButton.disabled = false; // No hint button
 
-    // Removed hint highlight reset logic
     cells.forEach(cell => {
         cell.textContent = '';
         cell.classList.remove('x', 'o');
@@ -136,11 +202,17 @@ function applyThemeOnLoad() {
     }
 }
 
-// Event Listeners:
-cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+// Event Listeners for choice buttons
+choose3x3Button.addEventListener('click', () => initializeGame(3));
+choose4x4Button.addEventListener('click', () => initializeGame(4));
+
+// Event Listeners for game buttons (these will be attached once the game starts)
 resetButton.addEventListener('click', handleResetGame);
-// Removed: hintButton.addEventListener('click', getLLMHint); // No hint button
 themeToggleButton.addEventListener('click', toggleDarkMode);
 
-// Apply the saved theme when the page loads
-document.addEventListener('DOMContentLoaded', applyThemeOnLoad);
+// Initial setup: Apply theme and show choice screen
+document.addEventListener('DOMContentLoaded', () => {
+    applyThemeOnLoad();
+    choiceScreen.classList.remove('hidden'); // Ensure choice screen is visible on load
+    gameContainer.classList.add('hidden'); // Ensure game container is hidden on load
+});
