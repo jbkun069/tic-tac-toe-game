@@ -1,0 +1,23 @@
+# IDE-specific files
+.idea/
+.vscode/ # For VS Code users, if you have this
+*.sublime-project # For Sublime Text
+*.sublime-workspace
+
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Operating System files
+.DS_Store # macOS
+Thumbs.db # Windows
+
+# Compiled output (if you were using a build step)
+/dist/
+/build/
+
+# Logs
+*.log
+logs/
