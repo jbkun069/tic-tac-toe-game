@@ -117,7 +117,6 @@ function checkResult() {
     for (let i = 0; i < winningConditions.length; i++) {
         const winCondition = winningConditions[i];
         // Get the values from the board array for the cells in this condition
-        // Ensure all cells in the condition are checked based on the board size
         const firstCellMark = board[winCondition[0]];
 
         // If the first cell in the condition is empty, this condition cannot be met yet
@@ -143,12 +142,14 @@ function checkResult() {
     if (roundWon) {
         gameStatusDisplay.textContent = `Player ${currentPlayer} Has Won!`;
         gameActive = false;
+        gameBoard.classList.add('game-over'); // Add game-over class to board
         return;
     }
 
     if (!board.includes('')) {
         gameStatusDisplay.textContent = `It's a Draw!`;
         gameActive = false;
+        gameBoard.classList.add('game-over'); // Add game-over class to board
         return;
     }
 
@@ -175,6 +176,7 @@ function handleResetGame() {
     currentPlayer = 'X';
     gameActive = true;
     gameStatusDisplay.textContent = `Player ${currentPlayer}'s Turn`;
+    gameBoard.classList.remove('game-over'); // Remove game-over class from board
 
     cells.forEach(cell => {
         cell.textContent = '';
