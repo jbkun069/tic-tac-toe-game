@@ -1,5 +1,4 @@
 
-/* Define CSS Variables for colors - Light Mode (default) */
 :root {
     --body-bg-color: #e0f2f7; /* Light Blue */
     --container-bg-color: #ffffff;
@@ -18,7 +17,6 @@
     --button-shadow-color: rgba(0, 0, 0, 0.2);
     --button-shadow-hover-color: rgba(0, 0, 0, 0.25);
     --button-shadow-active-color: rgba(0, 0, 0, 0.2);
-    --winning-cell-bg-color: #ffe082; /* Light Yellow for winning cells */
 }
 
 /* Dark Mode overrides for CSS Variables */
@@ -40,7 +38,6 @@ body.dark-mode {
     --button-shadow-color: rgba(0, 0, 0, 0.3);
     --button-shadow-hover-color: rgba(0, 0, 0, 0.4);
     --button-shadow-active-color: rgba(0, 0, 0, 0.3);
-    --winning-cell-bg-color: #fdd835; /* More vibrant yellow for dark mode */
 }
 
 
@@ -56,17 +53,19 @@ body {
     transition: background-color 0.3s ease;
 }
 
+/* New: Class to hide elements */
 .hidden {
-    display: none !important;
+    display: none !important; /* Use !important to ensure it overrides other display properties */
 }
 
+/* Specific styling for the choice screen to ensure buttons are centered */
 .choice-screen .button-group {
-    flex-direction: row;
+    flex-direction: row; /* Keep buttons in a row for choice screen */
     flex-wrap: wrap;
-    gap: 1.5rem;
+    gap: 1.5rem; /* More space between choice buttons */
 }
 .choice-screen .game-button {
-    min-width: 150px;
+    min-width: 150px; /* Ensure choice buttons are a decent size */
 }
 
 
@@ -98,7 +97,7 @@ h1 {
 }
 @media (max-width: 600px) {
     h1 {
-        font-size: 2rem;
+        font-size: 2rem; /* Adjust font size for smaller screens */
     }
 }
 
@@ -112,7 +111,7 @@ h1 {
 }
 @media (max-width: 600px) {
     #gameStatus {
-        font-size: 1.25rem;
+        font-size: 1.25rem; /* Adjust font size for smaller screens */
     }
 }
 
@@ -130,15 +129,15 @@ h1 {
     aspect-ratio: 1 / 1; /* Keep it square */
 }
 
-/* Styles for when the game is over */
+/* New: Styles for when the game is over */
 .game-board.game-over .cell {
-    cursor: default;
-    pointer-events: none;
+    cursor: default; /* Change cursor to default arrow */
+    pointer-events: none; /* Prevents all click events on cells */
 }
 
 .game-board.game-over .cell:hover {
-    background-color: var(--cell-bg-color);
-    transform: none;
+    background-color: var(--cell-bg-color); /* Revert hover background */
+    transform: none; /* Remove hover scale effect */
 }
 
 
@@ -166,24 +165,6 @@ h1 {
 
 .cell.o {
     color: #2ecc71; /* Green (remains constant for O) */
-}
-
-/* New: Styling for winning cells */
-.cell.winning-cell {
-    background-color: var(--winning-cell-bg-color); /* Use variable for highlight color */
-    animation: pulse 1s infinite alternate; /* Add a subtle pulse animation */
-}
-
-/* New: Keyframes for the pulse animation */
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 0 0px 0px var(--winning-cell-bg-color);
-    }
-    100% {
-        transform: scale(1.03);
-        box-shadow: 0 0 15px 5px var(--winning-cell-bg-color);
-    }
 }
 
 
@@ -223,7 +204,7 @@ h1 {
 }
 
 .game-button:disabled {
-    background-color: #95a5a6; /* Gray for disabled state */
+    background-color: var(--button-disabled-bg-color);
     cursor: not-allowed;
     box-shadow: none;
     transform: none;
