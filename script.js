@@ -112,6 +112,7 @@ function handlePlayerChange() {
 // Function to check if the game has been won or if it's a draw.
 function checkResult() {
     let roundWon = false;
+    let winningLine = []; // Store the winning line indices
 
     // Iterate through all possible winning conditions for the current board size
     for (let i = 0; i < winningConditions.length; i++) {
@@ -135,6 +136,7 @@ function checkResult() {
 
         if (allMatch) {
             roundWon = true;
+            winningLine = winCondition; // Store the winning line
             break;
         }
     }
@@ -142,14 +144,19 @@ function checkResult() {
     if (roundWon) {
         gameStatusDisplay.textContent = `Player ${currentPlayer} Has Won!`;
         gameActive = false;
-        gameBoard.classList.add('game-over'); // Add game-over class to board
+        gameBoard.classList.add('game-over');
+
+        // Add highlight to winning cells
+        winningLine.forEach(index => {
+            cells[index].classList.add('winning-cell');
+        });
         return;
     }
 
     if (!board.includes('')) {
         gameStatusDisplay.textContent = `It's a Draw!`;
         gameActive = false;
-        gameBoard.classList.add('game-over'); // Add game-over class to board
+        gameBoard.classList.add('game-over');
         return;
     }
 
@@ -176,11 +183,11 @@ function handleResetGame() {
     currentPlayer = 'X';
     gameActive = true;
     gameStatusDisplay.textContent = `Player ${currentPlayer}'s Turn`;
-    gameBoard.classList.remove('game-over'); // Remove game-over class from board
+    gameBoard.classList.remove('game-over');
 
     cells.forEach(cell => {
         cell.textContent = '';
-        cell.classList.remove('x', 'o');
+        cell.classList.remove('x', 'o', 'winning-cell'); // Also remove winning-cell class
     });
 }
 
