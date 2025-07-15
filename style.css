@@ -19,7 +19,6 @@
     --button-shadow-active-color: rgba(0, 0, 0, 0.2);
 }
 
-/* Dark Mode overrides for CSS Variables */
 body.dark-mode {
     --body-bg-color: #2c3e50; /* Darker Blue Gray */
     --container-bg-color: #34495e; /* Medium Dark Blue Gray */
@@ -53,19 +52,17 @@ body {
     transition: background-color 0.3s ease;
 }
 
-/* New: Class to hide elements */
 .hidden {
-    display: none !important; /* Use !important to ensure it overrides other display properties */
+    display: none !important;
 }
 
-/* Specific styling for the choice screen to ensure buttons are centered */
 .choice-screen .button-group {
-    flex-direction: row; /* Keep buttons in a row for choice screen */
+    flex-direction: row;
     flex-wrap: wrap;
-    gap: 1.5rem; /* More space between choice buttons */
+    gap: 1.5rem;
 }
 .choice-screen .game-button {
-    min-width: 150px; /* Ensure choice buttons are a decent size */
+    min-width: 150px;
 }
 
 
@@ -97,7 +94,7 @@ h1 {
 }
 @media (max-width: 600px) {
     h1 {
-        font-size: 2rem; /* Adjust font size for smaller screens */
+        font-size: 2rem;
     }
 }
 
@@ -111,33 +108,34 @@ h1 {
 }
 @media (max-width: 600px) {
     #gameStatus {
-        font-size: 1.25rem; /* Adjust font size for smaller screens */
+        font-size: 1.25rem;
     }
 }
 
 .game-board {
     display: grid;
     gap: 0.5rem; /* 8px */
-    width: 300px; /* Base size */
-    height: 300px; /* Base size */
+    width: 300px; /* Base size, JS will adjust */
+    height: 300px; /* Base size, JS will adjust */
     background-color: var(--game-board-bg-color);
     border-radius: 0.75rem; /* 12px */
-    overflow: hidden;
+    overflow: hidden; /* Crucial to clip the line within the board */
     margin-bottom: 2rem; /* 32px */
     max-width: 100%;
     height: auto;
     aspect-ratio: 1 / 1; /* Keep it square */
+    position: relative; /* Allows absolute positioning of children */
 }
 
-/* New: Styles for when the game is over */
+/* Styles for when the game is over */
 .game-board.game-over .cell {
-    cursor: default; /* Change cursor to default arrow */
-    pointer-events: none; /* Prevents all click events on cells */
+    cursor: default;
+    pointer-events: none;
 }
 
 .game-board.game-over .cell:hover {
-    background-color: var(--cell-bg-color); /* Revert hover background */
-    transform: none; /* Remove hover scale effect */
+    background-color: var(--cell-bg-color);
+    transform: none;
 }
 
 
@@ -189,7 +187,7 @@ h1 {
     box-shadow: 0 5px 10px var(--button-shadow-color);
     transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     flex-grow: 1; /* Allows buttons to grow and fill space */
-    max-width: 200px; /* Max width for individual buttons */
+    max-width: 250px; /* Adjusted from 200px to 250px */
 }
 
 .game-button:hover {
@@ -204,7 +202,7 @@ h1 {
 }
 
 .game-button:disabled {
-    background-color: var(--button-disabled-bg-color);
+    background-color: #95a5a6; /* Gray for disabled state */
     cursor: not-allowed;
     box-shadow: none;
     transform: none;
@@ -218,6 +216,6 @@ h1 {
     }
     .game-button {
         width: 100%; /* Full width for stacked buttons */
-        max-width: 250px; /* Adjust max-width for stacked buttons */
+        max-width: 250px; /* This was already 250px, ensuring consistency */
     }
 }
