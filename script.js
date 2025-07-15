@@ -15,6 +15,7 @@ let gameActive = true;
 let boardSize = 0; // Will be 3 or 4
 let cells = []; // Will be updated after board generation
 let winningConditions = []; // Will be generated dynamically
+let focusedCellIndex = 0; // Track which cell has keyboard focus
 
 // Function to generate winning conditions based on board size
 function generateWinningConditions(size) {
@@ -92,6 +93,10 @@ function initializeGame(size) {
     // Hide choice screen and show game container
     choiceScreen.classList.add('hidden');
     gameContainer.classList.remove('hidden');
+
+    // Initialize keyboard navigation
+    focusedCellIndex = 0;
+    updateFocusedCell();
 
     handleResetGame(); // Reset game state for the new board
 }
@@ -182,6 +187,77 @@ function handleResetGame() {
         cell.textContent = '';
         cell.classList.remove('x', 'o');
     });
+
+    // Reset keyboard focus
+    focusedCellIndex = 0;
+    updateFocusedCell();
+}
+
+// Function to update the visual focus indicator
+function updateFocusedCell() {
+    // Remove focus class from all cells
+    cells.forEach(cell => cell.classList.remove('focused'));
+    
+    // Add focus class to current cell
+    if (cells[focusedCellIndex]) {
+        cells[focusedCellIndex].classList.add('focused');
+    }
+}
+
+// Function to handle keyboard navigation
+function handleKeyboardNavigation(event) {
+    if (!gameActive || cells.length === 0) return;
+
+    const key = event.key;
+    let newIndex = focusedCellIndex;
+
+    switch (key) {
+        case 'ArrowUp':
+            event.preventDefault();
+            newIndex = focusedCellIndex - boardSize;
+            if (newIndex >= 0) {
+                focusedCellIndex = newIndex;
+                updateFocusedCell();
+            }
+            break;
+        
+        case 'ArrowDown':
+            event.preventDefault();
+            newIndex = focusedCellIndex + boardSize;
+            if (newIndex < cells.length) {
+                focusedCellIndex = newIndex;
+                updateFocusedCell();
+            }
+            break;
+        
+        case 'ArrowLeft':
+            event.preventDefault();
+            // Only move left if not at the start of a row
+            if (focusedCellIndex % boardSize !== 0) {
+                focusedCellIndex--;
+                updateFocusedCell();
+            }
+            break;
+        
+        case 'ArrowRight':
+            event.preventDefault();
+            // Only move right if not at the end of a row
+            if ((focusedCellIndex + 1) % boardSize !== 0 && focusedCellIndex < cells.length - 1) {
+                focusedCellIndex++;
+                updateFocusedCell();
+            }
+            break;
+        
+        case 'Enter':
+        case ' ':
+            event.preventDefault();
+            // Make a move on the focused cell
+            if (cells[focusedCellIndex] && board[focusedCellIndex] === '') {
+                handleCellPlayed(cells[focusedCellIndex], focusedCellIndex);
+                checkResult();
+            }
+            break;
+    }
 }
 
 // Function to toggle between light and dark modes
@@ -211,6 +287,9 @@ choose4x4Button.addEventListener('click', () => initializeGame(4));
 // Event Listeners for game buttons (these will be attached once the game starts)
 resetButton.addEventListener('click', handleResetGame);
 themeToggleButton.addEventListener('click', toggleDarkMode);
+
+// Add keyboard navigation
+document.addEventListener('keydown', handleKeyboardNavigation);
 
 // Initial setup: Apply theme and show choice screen
 document.addEventListener('DOMContentLoaded', () => {
