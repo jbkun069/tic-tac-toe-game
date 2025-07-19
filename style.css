@@ -39,6 +39,66 @@ body.dark-mode {
     --button-shadow-active-color: rgba(0, 0, 0, 0.3);
 }
 
+body.sunset-mode {
+    --body-bg-color: #ff6b6b; /* Coral Red */
+    --container-bg-color: #ffe66d; /* Warm Yellow */
+    --heading-color: #4d194d; /* Deep Purple */
+    --status-text-color: #6a0572; /* Dark Purple */
+    --game-board-bg-color: #ff8e53; /* Orange */
+    --cell-bg-color: #ffeaa7; /* Light Yellow */
+    --cell-text-color: #2d3436; /* Dark Gray */
+    --cell-hover-bg-color: #fdcb6e; /* Golden Yellow */
+    --button-bg-color: #fd79a8; /* Pink */
+    --button-text-color: white;
+    --button-hover-bg-color: #e84393; /* Darker Pink */
+    --button-disabled-bg-color: #ddd; /* Light Gray */
+    --shadow-color: rgba(0, 0, 0, 0.15);
+    --shadow-hover-color: rgba(0, 0, 0, 0.2);
+    --button-shadow-color: rgba(0, 0, 0, 0.2);
+    --button-shadow-hover-color: rgba(0, 0, 0, 0.25);
+    --button-shadow-active-color: rgba(0, 0, 0, 0.2);
+}
+
+body.forest-mode {
+    --body-bg-color: #2d5016; /* Dark Forest Green */
+    --container-bg-color: #68a063; /* Medium Green */
+    --heading-color: #f1f8e9; /* Light Green White */
+    --status-text-color: #c8e6c9; /* Light Green */
+    --game-board-bg-color: #388e3c; /* Forest Green */
+    --cell-bg-color: #a5d6a7; /* Light Forest Green */
+    --cell-text-color: #1b5e20; /* Dark Green */
+    --cell-hover-bg-color: #81c784; /* Medium Light Green */
+    --button-bg-color: #8bc34a; /* Lime Green */
+    --button-text-color: #1b5e20; /* Dark Green */
+    --button-hover-bg-color: #689f38; /* Darker Lime */
+    --button-disabled-bg-color: #757575; /* Gray */
+    --shadow-color: rgba(0, 0, 0, 0.25);
+    --shadow-hover-color: rgba(0, 0, 0, 0.3);
+    --button-shadow-color: rgba(0, 0, 0, 0.25);
+    --button-shadow-hover-color: rgba(0, 0, 0, 0.3);
+    --button-shadow-active-color: rgba(0, 0, 0, 0.25);
+}
+
+body.ocean-mode {
+    --body-bg-color: #0d47a1; /* Deep Blue */
+    --container-bg-color: #1976d2; /* Blue */
+    --heading-color: #e3f2fd; /* Very Light Blue */
+    --status-text-color: #bbdefb; /* Light Blue */
+    --game-board-bg-color: #1565c0; /* Medium Blue */
+    --cell-bg-color: #64b5f6; /* Light Blue */
+    --cell-text-color: #0d47a1; /* Deep Blue */
+    --cell-hover-bg-color: #42a5f5; /* Slightly Darker Light Blue */
+    --button-bg-color: #00acc1; /* Cyan */
+    --button-text-color: white;
+    --button-hover-bg-color: #0097a7; /* Darker Cyan */
+    --button-disabled-bg-color: #90a4ae; /* Blue Gray */
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    --shadow-hover-color: rgba(0, 0, 0, 0.25);
+    --button-shadow-color: rgba(0, 0, 0, 0.25);
+    --button-shadow-hover-color: rgba(0, 0, 0, 0.3);
+    --button-shadow-active-color: rgba(0, 0, 0, 0.25);
+}
+
 
 body {
     font-family: 'Inter', sans-serif;

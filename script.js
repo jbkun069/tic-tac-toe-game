@@ -17,6 +17,16 @@ let cells = []; // Will be updated after board generation
 let winningConditions = []; // Will be generated dynamically
 let focusedCellIndex = 0; // Track which cell has keyboard focus
 
+// Theme management
+const themes = [
+    { name: 'light', displayName: 'Light', icon: '☀️', className: '' },
+    { name: 'dark', displayName: 'Dark', icon: '🌙', className: 'dark-mode' },
+    { name: 'sunset', displayName: 'Sunset', icon: '🌅', className: 'sunset-mode' },
+    { name: 'forest', displayName: 'Forest', icon: '🌲', className: 'forest-mode' },
+    { name: 'ocean', displayName: 'Ocean', icon: '🌊', className: 'ocean-mode' }
+];
+let currentThemeIndex = 0;
+
 // Function to generate winning conditions based on board size
 function generateWinningConditions(size) {
     const conditions = [];
@@ -260,24 +270,49 @@ function handleKeyboardNavigation(event) {
     }
 }
 
-// Function to toggle between light and dark modes
-function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
-    const isDarkMode = document.body.classList.contains('dark-mode');
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-    themeToggleButton.textContent = isDarkMode ? '☀️ Light Mode' : '🌙 Dark Mode';
+// Function to toggle between themes
+function cycleTheme() {
+    // Remove current theme class
+    const currentTheme = themes[currentThemeIndex];
+    if (currentTheme.className) {
+        document.body.classList.remove(currentTheme.className);
+    }
+    
+    // Move to next theme
+    currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+    const newTheme = themes[currentThemeIndex];
+    
+    // Apply new theme class
+    if (newTheme.className) {
+        document.body.classList.add(newTheme.className);
+    }
+    
+    // Update button text
+    const nextTheme = themes[(currentThemeIndex + 1) % themes.length];
+    themeToggleButton.textContent = `${nextTheme.icon} ${nextTheme.displayName} Mode`;
+    
+    // Save to localStorage
+    localStorage.setItem('theme', newTheme.name);
 }
 
 // Function to apply theme on page load
 function applyThemeOnLoad() {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-mode');
-        themeToggleButton.textContent = '☀️ Light Mode';
-    } else {
-        document.body.classList.remove('dark-mode');
-        themeToggleButton.textContent = '🌙 Dark Mode';
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    
+    // Find the saved theme index
+    const themeIndex = themes.findIndex(theme => theme.name === savedTheme);
+    currentThemeIndex = themeIndex >= 0 ? themeIndex : 0;
+    
+    const currentTheme = themes[currentThemeIndex];
+    
+    // Apply theme class
+    if (currentTheme.className) {
+        document.body.classList.add(currentTheme.className);
     }
+    
+    // Update button text to show next theme
+    const nextTheme = themes[(currentThemeIndex + 1) % themes.length];
+    themeToggleButton.textContent = `${nextTheme.icon} ${nextTheme.displayName} Mode`;
 }
 
 // Event Listeners for choice buttons
@@ -286,7 +321,7 @@ choose4x4Button.addEventListener('click', () => initializeGame(4));
 
 // Event Listeners for game buttons (these will be attached once the game starts)
 resetButton.addEventListener('click', handleResetGame);
-themeToggleButton.addEventListener('click', toggleDarkMode);
+themeToggleButton.addEventListener('click', cycleTheme);
 
 // Add keyboard navigation
 document.addEventListener('keydown', handleKeyboardNavigation);
