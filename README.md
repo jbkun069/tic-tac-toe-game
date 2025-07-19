@@ -2,22 +2,26 @@
 
 A classic Tic-Tac-Toe game built with modern web technologies, featuring a choice of board sizes and a light/dark mode toggle.
 
+
 ## Features
 
 - **Two-Player Mode**: Play against a friend on the same device.
 - **Board Size Selection**: Choose between a standard 3x3 board or a larger 4x4 board for extended gameplay.
 - **Responsive Design**: Enjoy the game seamlessly on various screen sizes, from mobile to desktop.
 - **Light/Dark Mode Toggle**: Switch between different visual themes for a personalized experience.
+- **Keyboard Navigation**: Use arrow keys to move between cells and Enter/Space to make a move for improved accessibility.
 - **Game Over State**: Cells become unclickable once a win or draw occurs, providing clear game state feedback.
+
 
 ## How to Play
 
 1. **Choose Board Size**: Upon loading, select either "3x3 Board" or "4x4 Board".
-2. **Take Turns**: Player X goes first, followed by Player O. Click on an empty cell to place your mark.
-3. **Win Condition**: Get three (or four for 4x4) of your marks in a row, column, or diagonal to win.
-4. **Draw**: If all cells are filled and no player has won, the game is a draw.
-5. **Reset Game**: Click the "Reset Game" button to start a new round with the current board size.
-6. **Toggle Theme**: Use the "🌙 Dark Mode" / "☀️ Light Mode" button to change the visual theme. Your preference will be saved.
+2. **Take Turns**: Player X goes first, followed by Player O. Click on an empty cell or use the keyboard to place your mark.
+3. **Keyboard Controls**: Use the arrow keys to move the focus between cells. Press Enter or Space to place your mark in the focused cell.
+4. **Win Condition**: Get three (or four for 4x4) of your marks in a row, column, or diagonal to win.
+5. **Draw**: If all cells are filled and no player has won, the game is a draw.
+6. **Reset Game**: Click the "Reset Game" button to start a new round with the current board size.
+7. **Toggle Theme**: Use the "🌙 Dark Mode" / "☀️ Light Mode" button to change the visual theme. Your preference will be saved.
 
 ## Technologies Used
 
