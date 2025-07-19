@@ -187,6 +187,14 @@ function handleCellClick(event) {
 
 // Function to reset the game to its initial state.
 function handleResetGame() {
+    // Show confirmation dialog if game is active and has moves
+    if (gameActive && board.some(cell => cell !== '')) {
+        const confirmReset = confirm('Are you sure you want to reset the game? This will clear the current board and start over.');
+        if (!confirmReset) {
+            return; // User cancelled, don't reset
+        }
+    }
+
     board.fill(''); // Clear the board array
     currentPlayer = 'X';
     gameActive = true;
@@ -323,8 +331,21 @@ choose4x4Button.addEventListener('click', () => initializeGame(4));
 resetButton.addEventListener('click', handleResetGame);
 themeToggleButton.addEventListener('click', cycleTheme);
 
-// Add keyboard navigation
-document.addEventListener('keydown', handleKeyboardNavigation);
+
+// Add keyboard navigation and intercept F5/Ctrl+R for reset warning
+document.addEventListener('keydown', function(event) {
+    // Keyboard navigation
+    handleKeyboardNavigation(event);
+
+    // Intercept F5 and Ctrl+R for reload warning
+    if ((event.key === 'F5' || (event.key.toLowerCase() === 'r' && event.ctrlKey)) && gameActive && board.some(cell => cell !== '')) {
+        const confirmReload = confirm('Are you sure you want to reload? This will reset the current game.');
+        if (!confirmReload) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+    }
+});
 
 // Initial setup: Apply theme and show choice screen
 document.addEventListener('DOMContentLoaded', () => {
