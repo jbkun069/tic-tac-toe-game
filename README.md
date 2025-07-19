@@ -8,7 +8,7 @@ A classic Tic-Tac-Toe game built with modern web technologies, featuring a choic
 - **Two-Player Mode**: Play against a friend on the same device.
 - **Board Size Selection**: Choose between a standard 3x3 board or a larger 4x4 board for extended gameplay.
 - **Responsive Design**: Enjoy the game seamlessly on various screen sizes, from mobile to desktop.
-- **Light/Dark Mode Toggle**: Switch between different visual themes for a personalized experience.
+- **Multiple Color Themes**: Cycle between Light, Dark, Sunset, Forest, and Ocean themes for a personalized experience.
 - **Keyboard Navigation**: Use arrow keys to move between cells and Enter/Space to make a move for improved accessibility.
 - **Game Over State**: Cells become unclickable once a win or draw occurs, providing clear game state feedback.
 
@@ -21,7 +21,7 @@ A classic Tic-Tac-Toe game built with modern web technologies, featuring a choic
 4. **Win Condition**: Get three (or four for 4x4) of your marks in a row, column, or diagonal to win.
 5. **Draw**: If all cells are filled and no player has won, the game is a draw.
 6. **Reset Game**: Click the "Reset Game" button to start a new round with the current board size.
-7. **Toggle Theme**: Use the "🌙 Dark Mode" / "☀️ Light Mode" button to change the visual theme. Your preference will be saved.
+7. **Cycle Themes**: Click the theme button to cycle through Light, Dark, Sunset, Forest, and Ocean themes. Your preference will be saved.
 
 ## Technologies Used
 
